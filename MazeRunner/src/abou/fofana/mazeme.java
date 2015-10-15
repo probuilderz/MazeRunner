@@ -171,21 +171,21 @@ public class mazeme {
 			maze = makeMaze(r,c, percent);
 			if (select_mode ==0){
 				mode_int = (int)(num_intrud *(0.1));
-				System.out.println(num_intrud);
+				System.out.println(num_intrud);      //For debugging purposes.
 				System.out.println(mode_int);
 				System.out.println("first");
 				isSolve = solveMazeEG(1,1,maze);
 
 			}else if(select_mode ==1){
-				mode_int = (int)(num_intrud *(0.4));
-				System.out.println(num_intrud);
+				mode_int = (int)(num_intrud *(0.2));
+				System.out.println(num_intrud);       //For debugging purposes.
 				System.out.println(mode_int);
 				System.out.println("second");
 				isSolve = solveMazeAG(1,1,maze);
 
 			}else{
-				mode_int = (int)(num_intrud *(0.7));
-				System.out.println(num_intrud);
+				mode_int = (int)(num_intrud *(0.4));
+				System.out.println(num_intrud);        //For debugging purposes.
 				System.out.println(mode_int);
 				System.out.println("third");
 				isSolve = solveMazeFG(1,1,maze);
@@ -195,7 +195,8 @@ public class mazeme {
 
 			if(isSolve){
 				//System.out.println("The maze can be solved after: "+ (count1+1)+ " iterations");
-				System.out.println("The system has detected and killed "+ (hit)+ " Trojan viruses");
+				System.out.println("The system has detected and killed "+ (hit)+ " intruders");
+				System.out.println("No more intruder. The system is clean.");
 			}else{
 				System.out.println("The VRunner has scanned your Maze and killed "+(hit)+" intruders");
 
@@ -509,9 +510,10 @@ public class mazeme {
 		}else if (maze[row][col]=='T'){
 			maze[row][col] = '@';
 			putSquare(row,col,m,'@');
-			hit++;
+			hit++;			
 			mazeObject2.setMaze(m);
 			mazeObject2.prn(mazeObject2.getMaze());
+			if(hit == num_intrud) return true;
 			try { Thread.sleep(speedSleep); }
 			catch (InterruptedException e) { }
 			if ( (solveMazeEG(row,col+1,m) ) ||     // try to solve maze by extending path
@@ -611,9 +613,10 @@ public class mazeme {
 		}else if (maze[row][col]=='T'){
 			maze[row][col] = '@';
 			putSquare(row,col,m,'@');
-			hit++;
+			hit++;			
 			mazeObject2.setMaze(m);
 			mazeObject2.prn(mazeObject2.getMaze());
+			if(hit == num_intrud) return true;
 			try { Thread.sleep(speedSleep); }
 			catch (InterruptedException e) { }
 			if ( (solveMazeAG(row,col+1,m) ) ||     // try to solve maze by extending path
@@ -637,8 +640,8 @@ public class mazeme {
 			//				return true;  // path has reached goal
 			//			}
 		}else if((count1 <= mode_int) &&(row !=0)&&(row < mazeObject2.getRows()-1)&&(col!=0)
-				&&(col < mazeObject2.getCol()-1)&&(maze[row][col]=='x') ){  //This is to avoid the Runner to be
-			maze[row][col] = '@';									// stuck in the first move
+				&&(col < mazeObject2.getCol()-1)&&(maze[row][col]=='x') ){  //This section is to knock down the
+			maze[row][col] = '@';									// wall depending on the mode selected
 			putSquare(row,col,m,'@');
 			mazeObject2.setMaze(m);
 			mazeObject2.prn(mazeObject2.getMaze());
@@ -711,12 +714,13 @@ public class mazeme {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}else if (maze[row][col]=='T'){
+		}else if (maze[row][col]=='T'){			
 			maze[row][col] = '@';
 			putSquare(row,col,m,'@');
-			hit++;
+			hit++;			
 			mazeObject2.setMaze(m);
 			mazeObject2.prn(mazeObject2.getMaze());
+			if(hit == num_intrud) return true;
 			try { Thread.sleep(speedSleep); }
 			catch (InterruptedException e) { }
 			if ( (solveMazeFG(row,col+1,m) ) ||     // try to solve maze by extending path
@@ -740,7 +744,7 @@ public class mazeme {
 			//			return true;  // path has reached goal
 			//		}
 		}else if((count1 <= mode_int) && (row !=0)&&(row < mazeObject2.getRows()-1)&&(col!=0)
-				&&(col < mazeObject2.getCol()-1)&&(maze[row][col]=='x') ){  //TKnock down the wall depending
+				&&(col < mazeObject2.getCol()-1)&&(maze[row][col]=='x') ){  //Knock down the wall depending
 			maze[row][col] = '@';									// on the selecting mode
 			putSquare(row,col,m,'@');
 			mazeObject2.setMaze(m);
